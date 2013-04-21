@@ -99,42 +99,67 @@ extern "C" {
         axis = (axis==X)?Y:(axis==Y)?Z:X;
     }
     
-    void drawAxis(){
+    void drawLocAxis(){
         glDisable(GL_LIGHTING);
         glBegin(GL_LINES);
         //X axis
-        glColor3f(1.0, 0, 0);
+        glColor3f(0.5, 0.5, 0);
+        glVertex3f(0, 0, 0);
+        glVertex3f(0.5, 0, 0);
+        //y axis
+        glColor3f(0, 0.5, 0.5);
+        glVertex3f(0, 0, 0);
+        glVertex3f(0, 0.5, 0);
+        //z axis
+        glColor3f(0.5, 0, 0.5);
+        glVertex3f(0, 0, 0);
+        glVertex3f(0, 0, 0.5);
+
+        glEnd();
+        glEnable(GL_LIGHTING);
+    }
+    
+    void drawMinAxis(){
+
+        glDisable(GL_LIGHTING);
+        glBegin(GL_LINES);
+        if (axis==X){
+        //X axis
+        glColor3f(1.0, 1.0, 0);
         glVertex3f(0, 0, 0);
         glVertex3f(3, 0, 0);
-        //y axis
-        glColor3f(0, 1.0, 0);
+        }else if(axis==Y){
+            //y axis
+        glColor3f(1.0, 1.0, 0);
         glVertex3f(0, 0, 0);
         glVertex3f(0, 3, 0);
+        }else{
         //z axis
-        glColor3f(0, 0, 1.0);
+        glColor3f(1.0, 1.0, 0);
         glVertex3f(0, 0, 0);
         glVertex3f(0, 0, 3);
-
+        }
         glEnd();
         glEnable(GL_LIGHTING);
     }
    
     
     void drawTeapot(){
-    //glPopMatrix();
-    glTranslatef(tempX,tempY,tempZ);
-    glRotatef(rotX,1,0,0);
-    glRotatef(rotY,0,1,0); 
-    glRotatef(rotZ,0,0,1);
-    //glTranslatef(currentX,currentY,currentZ);
-    drawAxis();
-    glColor3f(1.0f,0.5f,0.0f);
-    glPushMatrix();
-    glutSolidTeapot(2);
+    glTranslatef(currentX,currentY,currentZ);//move teapot relative to global axis
+    drawMinAxis();//draw local axis*
     
-    rotX=0;rotY=0;rotZ=0;
-    tempX=0;tempY=0;tempZ=0;
-    currentX=0;currentY=0;currentZ=0;
+    glRotatef(rotX,1,0,0);//rotate relative to local axis
+    glRotatef(rotY,0,1,0);//rotate relative to local axis
+    glRotatef(rotZ,0,0,1);//rotate relative to local axis
+    drawMinAxis();
+    
+    drawLocAxis();
+    
+    glColor3f(1.0f,0.5f,0.0f);
+    glutSolidTeapot(2);
+
+    //currentX=0;currentY=0;currentZ=0;
+    //rotX=0;rotY=0;rotZ=0;
     }
 
 

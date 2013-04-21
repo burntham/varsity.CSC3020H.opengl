@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include <GL/glut.h>
 #include <string>
+#include "Attributes.h"
+#include "Handler.h"
 
 using namespace std;
 float i =1.0;
@@ -16,29 +18,26 @@ void display()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glMatrixMode(GL_MODELVIEW);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
-    gluLookAt(0,0,-3,0,0,0,0,1,0);
-    glEnable(GL_DEPTH_TEST);
+    glLoadIdentity();//load the identity matrix
+    gluLookAt(0,0,camDist,0,0,0,0,1,0);  
+    rotateCamera();//call the camera rotating
+    glEnable(GL_DEPTH_TEST);//enable depth testing
+    drawGlobAxis();//self explanatory
+
+    glColorMaterial (GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_COLOR_MATERIAL);
     
-    glColor3f(0.5f,0.3f,0.5f);
-    glRotatef(i++,0,1,0);
-    glutSolidTeapot(1); 
     glEnable(GL_LIGHTING);  
     glEnable(GL_LIGHT0);
+    
+    //glTranslatef(-5,0,0);
+    //glRotatef(45,0,0,1);
+    drawTeapot();
+    //glPopMatrix();
     glutSwapBuffers();
 }
 
-void Keyinput(unsigned char key, int mousePos_x, int mousePos_y){
-  switch ( key ) 
-  {
-      case 27://exit button pressed
-      exit ( 0 );   
-      break;      
 
-    default:      
-      break;
-  }
-};
 
 int main(int argc, char** argv) {
     //initialize
@@ -57,11 +56,11 @@ int main(int argc, char** argv) {
     glutIdleFunc(&display);
     //Handle Keyboard input;
     glutKeyboardFunc(&Keyinput);
+    //set first trans axis to X
     
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
     gluPerspective( 90.0f,1, 0.1f, 100.0f);
-    
     
   //main loop
   glutMainLoop();
