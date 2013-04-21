@@ -10,44 +10,21 @@
 #include <string>
 
 using namespace std;
-float i =0.1;
+float i =1.0;
 void display()
-{   // Change to the Modelview
+{ 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glMatrixMode(GL_MODELVIEW);
-    // Reset Matrix
-    glLoadIdentity();
-    
-    gluPerspective(90,1,0,100);
-    gluLookAt(0,0,-15,0,0,0,0,1,0);
-    
-    //clears colour and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    
-    //render the teapot set the render colour of the teapot
-    glColor3f(0.3f, 0.5f, 0.7f);
-    //glLoadIdentity();
-    
-    //i++;
-   glRotatef(90.0f,0,2,0);
-    
-   // glTranslatef(0,0,10.0f);
-    //draw a teapot
-     glFrontFace(GL_CW); 
-     glutSolidTeapot(2); 
-     glFrontFace(GL_CCW); 
-       //enables opengl's depth test
+    glLoadIdentity();
+    gluLookAt(0,0,-3,0,0,0,0,1,0);
     glEnable(GL_DEPTH_TEST);
     
-
-    //enables lighting
-    glEnable(GL_LIGHTING);
-    //adds a light to the scene
+    glColor3f(0.5f,0.3f,0.5f);
+    glRotatef(i++,0,1,0);
+    glutSolidTeapot(1); 
+    glEnable(GL_LIGHTING);  
     glEnable(GL_LIGHT0);
-    //swaps the double buffer
-    
-  
     glutSwapBuffers();
 }
 
@@ -80,6 +57,10 @@ int main(int argc, char** argv) {
     glutIdleFunc(&display);
     //Handle Keyboard input;
     glutKeyboardFunc(&Keyinput);
+    
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    gluPerspective( 90.0f,1, 0.1f, 100.0f);
     
     
   //main loop
